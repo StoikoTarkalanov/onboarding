@@ -77,20 +77,30 @@ get_header();
 	}
 
 	if ( have_posts() ) {
-		// <!-- Start of the main loop. -->
-		$i = 0;
+		$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 
-		while ( have_posts() ) {
-			$i++;
-			if ( $i > 1 ) {
+		$args = array(
+			'post_type'         => 'post',
+			'posts_per_page'    => 1,
+			'paged'          	=> $paged
+		);
+
+		$the_query = new WP_Query( $args );
+		if ( $the_query->have_posts() ) {
+
+			while ( $the_query->have_posts() ) {
+				$the_query->the_post();
+				echo '<div class="entry-header-inner section-inner medium">'; 
+				echo '<h2 class="entry-title heading-size-1">' . get_the_title() . '</h2>';
+				echo '<p>' . get_the_content() . '</p>';
+				echo '<span>' . 'Posted on: ' . get_the_time("Y-m-d") . '</span>';
+				echo '</div>';
 				echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
 			}
-			the_post();
-			// wp_link_pages();  
-
-			get_template_part( 'template-parts/content', get_post_type() );
-
 		}
+		echo '<div style="text-align: center">' . paginate_links() . '</div>';
+		wp_reset_postdata();
+
 	} elseif ( is_search() ) {
 		?>
 
@@ -110,7 +120,6 @@ get_header();
 	}
 	?>
 
-	<?php get_template_part( 'template-parts/pagination' ); ?>
 
 </main><!-- #site-content -->
 
