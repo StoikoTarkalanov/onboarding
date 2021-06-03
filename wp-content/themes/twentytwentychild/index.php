@@ -13,7 +13,6 @@
  * @subpackage Twenty_Twenty
  * @since Twenty Twenty 1.0
  */
-
 get_header();
 ?>
 
@@ -71,6 +70,8 @@ get_header();
 
 			</div><!-- .archive-header-inner -->
 
+		<?php do_action("wp_head"); ?>
+
 		</header><!-- .archive-header -->
 
 		<?php
@@ -82,16 +83,17 @@ get_header();
 		$args = array(
 			'post_type'         => 'post',
 			'posts_per_page'    => 1,
-			'paged'          	=> $paged
+			'paged'          	=> $paged,
 		);
 
 		$the_query = new WP_Query( $args );
 		if ( $the_query->have_posts() ) {
-
+		
 			while ( $the_query->have_posts() ) {
 				$the_query->the_post();
+
 				echo '<div class="entry-header-inner section-inner medium">'; 
-				echo '<h2 class="entry-title heading-size-1">' . get_the_title() . '</h2>';
+				echo '<h2 class="entry-title heading-size-1">' . '<a href="' . get_permalink() . '">' . get_the_title() . '</a>' . '</h2>';
 				echo '<p>' . get_the_content() . '</p>';
 				echo '<span>' . 'Posted on: ' . get_the_time("Y-m-d") . '</span>';
 				echo '</div>';
