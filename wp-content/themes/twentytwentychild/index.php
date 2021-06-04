@@ -70,7 +70,7 @@ get_header();
 
 			</div><!-- .archive-header-inner -->
 
-		<?php do_action("wp_head"); ?>
+		<?php do_action('wp_head'); ?>
 
 		</header><!-- .archive-header -->
 
