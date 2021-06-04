@@ -26,12 +26,13 @@ function awepop_add_view() {
    if(is_single()) {
       global $post;
       $current_views = get_post_meta($post->ID, "pop_views", true);
-      if(!isset($current_views) OR empty($current_views) OR !is_numeric($current_views) ) {
+      if(!isset($current_views) || empty($current_views) || !is_numeric($current_views) ) {
          $current_views = 0;
       }
       $new_views = $current_views + 1;
       update_post_meta( $post->ID, "pop_views", $new_views );
       awepop_show_views();
+
       return $new_views;
    }
 }
@@ -51,7 +52,8 @@ function awepop_get_view_count() {
    global $post;
    $current_views = get_post_meta( $post->ID , "pop_views", true );
    
-   if (!isset($current_views) OR empty($current_views) OR ! is_numeric($current_views) ) {
+   if ( ! isset( $current_views ) || empty($current_views) || ! is_numeric($current_views) ) {
+
       $current_views = 0;
    }
 
@@ -93,3 +95,4 @@ function awepop_show_views() {
    echo '</div>';
 
 }
+
