@@ -96,6 +96,7 @@ get_header();
 				echo '<h2 class="entry-title heading-size-1">' . '<a href="' . get_permalink() . '">' . get_the_title() . '</a>' . '</h2>';
 				echo '<p>' . get_the_content() . '</p>';
 				echo '<span>' . 'Posted on: ' . get_the_time("Y-m-d") . '</span>';
+				echo '<img src"screenshot.png" >';
 				echo '</div>';
 				echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
 			}
