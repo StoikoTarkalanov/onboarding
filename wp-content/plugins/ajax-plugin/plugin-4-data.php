@@ -17,11 +17,10 @@
     }
     
     function onboarding_elements () {
-
         ?>
         <form method="POST">
         <div>
-            <input type="checkbox" id="data_check" name="data_check" <?php checked( get_option( 'filters_enabled' ), 'true', false ) ?>>
+            <input type="checkbox" id="data_check" name="data_check" <?php checked( get_option( 'filters_enabled' ), 'true', false ); ?> >
             <label for="data_check"> Filters Enabled</label> <br>
         </div>
         </form>
