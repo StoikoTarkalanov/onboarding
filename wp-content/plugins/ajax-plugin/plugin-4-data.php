@@ -1,6 +1,6 @@
 <?php
    /*
-   Plugin Name: AJAX Custom Plugin
+   Plugin Name: AJAX Checkbox Custom Plugin
    Plugin URI: 
    description: My fourth wordpress plugin 
    Version: 1.2
@@ -8,6 +8,10 @@
    Author URI: None
    License: GPL2
    */
+
+   
+   // check custom post type for students !!! 
+
     add_action( 'admin_menu', 'add_custom_submenu' );
 
     function add_custom_submenu () {
@@ -20,8 +24,8 @@
         ?>
         <form method="POST">
         <div>
-            <input type="checkbox" id="data_check" name="data_check" <?php checked( get_option( 'filters_enabled' ), 'true', false ); ?> >
-            <label for="data_check"> Filters Enabled</label> <br>
+            <input type="checkbox" id="data_check" name="data_check" <?php checked( get_option( 'filters_enabled' ), true, false ) ?> >
+            <label for="data_check"> Filters Enabled</label> 
         </div>
         </form>
         <?php

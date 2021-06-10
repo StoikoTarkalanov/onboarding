@@ -23,7 +23,6 @@ get_header();
 
 			get_template_part( 'template-parts/content', get_post_type() );
 			
-			// var_dump(get_the_post_thumbnail('WP_Post'));
 		}
 	}
 
