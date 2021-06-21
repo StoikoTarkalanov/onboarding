@@ -16,10 +16,17 @@ get_header();
 
 	<?php
 	$current_id = get_the_ID();
+	// echo $current_id;
 	$taxonomy_data = get_the_terms( $current_id, 'students-category' );
-	// var_dump( $taxonomy_data );	
+
+	$lives_in_data = get_post_meta( $current_id, 'student_home', true );
+	$address_data = get_post_meta( $current_id, 'student_address', true );
+	$birth_data = get_post_meta( $current_id, 'student_birth', true );
+	$grade_data = get_post_meta( $current_id, 'student_grade', true );
 
 	if ( have_posts() ) {
+
+		// echo do_shortcode('[single_student_short_code id=1877]');
 
 		while ( have_posts() ) {
 			the_post();
@@ -37,9 +44,26 @@ get_header();
 					foreach( $taxonomy_data as $data ) {
 						echo '<li>' . $data->name . '</li>';
 					}			
-				echo '<ul>';
+				echo '</ul>';
 			}
-			
+
+			if ( ! empty( $lives_in_data ) || ! empty( $address_data ) || ! empty( $birth_data ) || ! empty( $grade_data ) ) {
+				echo '<ul>';
+					echo '<h6>User Info</h6>';
+					if ( ! empty( $lives_in_data ) ) {
+						echo '<li>' . $lives_in_data . '</li>';
+					}	
+					if ( ! empty( $address_data ) ) {
+						echo '<li>' . $address_data . '</li>';
+					}	
+					if ( ! empty( $birth_data ) ) {
+						echo '<li>' . $birth_data . '</li>';
+					}	
+					if ( ! empty( $grade_data ) ) {
+						echo '<li>' . $grade_data . '</li>';
+					}	
+				echo '</ul>';
+			}
 		}
 	}
 

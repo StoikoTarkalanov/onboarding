@@ -11,7 +11,7 @@ get_header(); ?>
 
 		$args_students_content = array(
 		 	'post_type'         => 'students',
-		 	'posts_per_page'    => 2,
+		 	'posts_per_page'    => 4,
 		 	'paged'          	=> $paged
 		);
 
@@ -43,4 +43,5 @@ get_header(); ?>
 	</div><!-- #content -->
 </div><!-- #container -->
 
+<?php get_sidebar( 'Custom Students Sidebar' ); ?>
 <?php get_footer(); ?>

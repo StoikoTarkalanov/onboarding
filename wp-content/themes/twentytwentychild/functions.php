@@ -763,6 +763,7 @@ add_action( 'pre_get_posts', 'custom_posts_per_page' );
 function custom_posts_per_page( $query ) {
 
     if ( $query->is_archive('student') ) {
-        set_query_var('posts_per_page', 2);
+        set_query_var('posts_per_page', 4);
     }
 }
+
