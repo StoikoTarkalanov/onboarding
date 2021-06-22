@@ -79,6 +79,11 @@ $table_prefix = 'wp_';
  */
 define( 'WP_DEBUG', true );
 
+define( 'WP_DEBUG_LOG', true );
+error_reporting( E_ALL );
+ini_set( 'display_errors', 'yes' );
+define( 'FS_METHOD', 'direct' ); // Allows you to upload/update themes/plugins/core from your localhost
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */

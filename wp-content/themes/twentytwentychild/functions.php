@@ -759,11 +759,12 @@ function twentytwenty_get_elements_array() {
 	return apply_filters( 'twentytwenty_get_elements_array', $elements );
 }
 
-add_action( 'pre_get_posts', 'custom_posts_per_page' );
+// add_action( 'pre_get_posts', 'custom_posts_per_page' );
 function custom_posts_per_page( $query ) {
 
     if ( $query->is_archive('student') ) {
-        set_query_var('posts_per_page', 4);
+		var_dump('hi');
+        // set_query_var('posts_per_page', 4);
     }
 }
 

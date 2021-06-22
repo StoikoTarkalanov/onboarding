@@ -24,9 +24,14 @@ get_header();
 	$birth_data = get_post_meta( $current_id, 'student_birth', true );
 	$grade_data = get_post_meta( $current_id, 'student_grade', true );
 
+	
+	wp_trim_words( $address_data );
+	wp_trim_words( $birth_data );
+	wp_trim_words( $grade_data );
+
 	if ( have_posts() ) {
 
-		// echo do_shortcode('[single_student_short_code id=1877]');
+		// ('[single_student_short_code id=1877]');
 
 		while ( have_posts() ) {
 			the_post();
@@ -46,20 +51,20 @@ get_header();
 					}			
 				echo '</ul>';
 			}
-
-			if ( ! empty( $lives_in_data ) || ! empty( $address_data ) || ! empty( $birth_data ) || ! empty( $grade_data ) ) {
+			
+			if ( ! empty( wp_trim_words( $lives_in_data ) ) || ! empty( wp_trim_words( $address_data ) ) || ! empty( wp_trim_words( $birth_data ) ) || ! empty( wp_trim_words( $grade_data ) ) ) {
 				echo '<ul>';
 					echo '<h6>User Info</h6>';
-					if ( ! empty( $lives_in_data ) ) {
+					if ( ! empty( wp_trim_words( $lives_in_data ) ) ) {
 						echo '<li>' . $lives_in_data . '</li>';
-					}	
-					if ( ! empty( $address_data ) ) {
+					} 	
+					if ( ! empty( wp_trim_words( $address_data ) ) ) {
 						echo '<li>' . $address_data . '</li>';
 					}	
-					if ( ! empty( $birth_data ) ) {
+					if ( ! empty( wp_trim_words( $birth_data ) ) ) {
 						echo '<li>' . $birth_data . '</li>';
 					}	
-					if ( ! empty( $grade_data ) ) {
+					if ( ! empty( wp_trim_words( $grade_data ) ) ) {
 						echo '<li>' . $grade_data . '</li>';
 					}	
 				echo '</ul>';

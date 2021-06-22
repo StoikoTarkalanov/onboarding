@@ -21,10 +21,11 @@
                     ),
                     'public'        => true,
                     'has_archive'   => true,
-                    'show_in_rest'  => true, // Enable Gutenberg
                     'menu_icon'     => 'dashicons-welcome-learn-more',
                     'rewrite'       => array( 'slug' => 'student-archive' ),
+                    'show_in_nav_menus' => true,
                     'supports'      => array( 'editor', 'thumbnail' ),
+                    'show_in_rest'  => true, // Enable Gutenberg
                 )
     );
 
@@ -35,8 +36,11 @@
                     'label'          => 'Categories', 
                     'singular_label' => 'Category', 
                     'show_ui'        => true,
-                    'show_in_rest'  => true, // Enable Gutenberg
+                    'show_in_nav_menus' => true,
+                    'query_var'         => true,
                     'rewrite'        => array( 'slug' => 'student-category' ),
+                    'supports'      => array( 'editor', 'thumbnail' ),
+                    'show_in_rest'   => true, // Enable Gutenberg
                 )
     );
 
@@ -68,6 +72,7 @@
         }
     }
 
+    // active students colum
     add_filter( 'manage_students_posts_columns', 'is_active_columns_head' );
     function is_active_columns_head( $defaults ) {
         $defaults['activate_deactivate'] = 'Activate/Deactivate';
@@ -76,10 +81,8 @@
 
     add_action( 'manage_students_posts_custom_column', 'is_active_columns_content', 10, 2 );
     function is_active_columns_content( $column_name, $post_ID ) {
-
         if ( $column_name == 'activate_deactivate' ) {
             $checkbox_value = get_post_meta( $post_ID, 'student_status', true );
-            
 
             ?>
                 <input type="checkbox" name="status" value='1'<?php checked( $checkbox_value, '1' ); ?> >
@@ -87,6 +90,7 @@
         }
     }
 
+    // Metaboxes
     add_action( 'add_meta_boxes', 'student_status_add_meta' );
     function student_status_add_meta() {
         add_meta_box( 'student_status', 'Status', 'student_metabox_markup_status', 'students' );
@@ -100,7 +104,6 @@
     add_action( 'add_meta_boxes', 'student_address_add_meta' );
     function student_address_add_meta() {
         add_meta_box( 'student_address', 'Address', 'student_metabox_markup_address', 'students' );
-
     }
 
     add_action( 'add_meta_boxes', 'student_birth_add_meta' );
@@ -133,7 +136,7 @@
     
     function student_metabox_markup_address( $post ) {
         $student_address = get_post_meta( $post->ID, 'student_address', true );
-        var_dump( $post->ID );
+        // var_dump( $post->ID );
         ?>
            <label>Address</label>
             <input name="address" id="address" type="text" value=" <?php echo esc_html( $student_address ); ?> ">
@@ -183,6 +186,7 @@
         }
     }
 
+    // Shortcode
     add_shortcode( 'single_student_short_code', 'custom_short_code' );
     function custom_short_code( $atts ) {
         $atts = shortcode_atts( array(
@@ -215,6 +219,7 @@
         return $data != '' ? $data : '<p> "Could not find students with this ID" </p>';
     }
 
+    // Widget
     class students_widget extends WP_Widget {
   
         function __construct() {
@@ -229,8 +234,8 @@
             $title = apply_filters( 'widget_title', $instance['title'] );
             $status = $instance[ 'status' ];
             $data_per_post = $instance['data_per_post'];
-            
-            // echo $args['before_widget'];
+
+            echo $args['before_widget'];
 
             if ( ! empty( $title ) ) {
                 echo $args['before_title'] . $title . $args['after_title'];
@@ -272,7 +277,7 @@
                     <h6>There are no active students yet!</h6>
                 <?php
             }
-            
+
             // echo $args['after_widget'];
         }
                 
@@ -337,7 +342,8 @@
         );
     }
 
-    add_filter( 'the_content', 'filter_students_content', 1 );
+    // hook widget data to single post content
+    // add_filter( 'the_content', 'filter_students_content', 1 );
     function filter_students_content( $content ) {
         if ( is_singular( 'students' ) && in_the_loop() && is_main_query() ) {
             return $content . get_sidebar( 'Custom Students Sidebar' );
@@ -347,3 +353,152 @@
     }
 
 
+    // REST API VIA POSTMAN
+    // Get By ID
+    function collect_students_data_by_id( $data ) {
+        $posts = get_posts( 
+            array(
+                'post_type' => 'students',
+                'p'         => $data['id']
+            ) 
+        );
+
+        if ( empty( $posts ) ) {
+          return 'Not Found!';
+        }
+       
+        return $posts[0];
+    }
+
+    add_action( 'rest_api_init', 'custom_route_by_id' ); 
+    function custom_route_by_id() {
+
+        register_rest_route( 'single-student', '/id/(?P<id>\d+)',
+            array(
+                'methods'             => 'GET',
+                'callback'            => 'collect_students_data_by_id',
+                'permission_callback' => '__return_true',
+            ) 
+        );
+    } 
+
+    // Get All
+    function collect_all_students_data() {
+
+        $posts = get_posts( 
+            array(
+                'post_status'    => 'publish',
+                'post_type'      => 'students',
+                'posts_per_page' => 4,
+                'paged'          => ($_REQUEST['paged'] ? $_REQUEST['paged'] : 1),
+            ) 
+        );
+
+        if ( empty( $posts ) ) {
+          return 'Not Found!';
+        }
+       
+        return $posts;
+    }
+
+    add_action( 'rest_api_init', 'custom_route_get_all_data' ); 
+    function custom_route_get_all_data() {
+
+        register_rest_route( 'students', '/all',
+            array(
+                'methods'             => 'GET',
+                'callback'            => 'collect_all_students_data',
+                'permission_callback' => '__return_true',
+            ) 
+        );
+    } 
+
+    // Add One
+    function add_student_data() {
+        if ( ! empty( $_POST['post_title'] ) && ! empty( $_POST['post_content'] ) ) {
+            $new_student = array(
+                'post_type'    => 'students',
+                'post_title'   => sanitize_text_field( $_POST['post_title'] ),
+                'post_content' => sanitize_text_field( $_POST['post_content'] ),
+                'post_status'  => 'publish',
+            );
+
+            $student = wp_insert_post( $new_student );
+            return 'New student added with ID ' . $student;
+        }
+
+        return 'Not Found!';
+    }
+
+    add_action( 'rest_api_init', 'custom_route_add_one_student' ); 
+    function custom_route_add_one_student() {
+
+        register_rest_route( 'student', '/add', 
+            array(
+                'methods'             => 'POST',
+                'callback'            =>  'add_student_data',
+                'permission_callback' => function () { return current_user_can( 'edit_posts' ); },
+            ) 
+        );
+    }
+
+    // Edit
+    function edit_student_by_id_data( $data ) {      
+
+        var_dump($_POST);
+        if ( ! empty( $_POST['post_title'] ) && ! empty( $_POST['post_content'] ) ) {
+            $current_student = array(
+                    'post_type'    => 'students',
+                    'ID'           => $data['id'],
+                    'post_title'   => sanitize_text_field( $_POST['post_title'] ),
+                    'post_content' => sanitize_text_field( $_POST['post_content'] ),
+                    'post_status'  => 'publish',
+            );
+            
+            $edited_student = wp_update_post( $current_student );
+            return 'Edited student with ID ' . $edited_student;
+        }
+
+        return 'Not Found!';
+    }
+
+    add_action( 'rest_api_init', 'custom_route_edit_student' ); 
+    function custom_route_edit_student() {
+
+        register_rest_route( 'student', '/edit/(?P<id>\d+)', 
+            array(
+                'methods'             => 'POST',
+                'callback'            =>  'edit_student_by_id_data',
+                'permission_callback' => function () { return current_user_can( 'edit_posts' ); },
+            ) 
+        );
+    }
+
+    // Delete
+    function delete_student_data( $data ) {
+        $current_student = get_post(
+            array(
+                'post_type' => 'students',
+                'ID'        => $data['id'],
+            )
+        );
+
+        if ( empty( $current_student ) ) {
+            return 'No such student with this ID';
+        } else {
+            ?>'Successfuly deleted student'<?php
+             return wp_delete_post( $data['id'] );
+        }
+    }
+
+    add_action( 'rest_api_init', 'custom_route_delete_stident' ); 
+    function custom_route_delete_stident() {
+        register_rest_route( 'student', 'delete/id/(?P<id>\d+)', 
+            array(
+                'methods'             => 'DELETE',
+                'callback'            =>  'delete_student_data',
+                'permission_callback' => function () { return current_user_can( 'edit_posts' ); },
+            )
+        );
+    }
+   
