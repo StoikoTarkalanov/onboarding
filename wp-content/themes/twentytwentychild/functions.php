@@ -759,12 +759,17 @@ function twentytwenty_get_elements_array() {
 	return apply_filters( 'twentytwenty_get_elements_array', $elements );
 }
 
-// add_action( 'pre_get_posts', 'custom_posts_per_page' );
-function custom_posts_per_page( $query ) {
+// // add_action( 'pre_get_posts', 'custom_posts_per_page' );
+// function custom_posts_per_page( $query ) {
 
-    if ( $query->is_archive('student') ) {
-		var_dump('hi');
-        // set_query_var('posts_per_page', 4);
-    }
-}
+//     if ( $query->is_archive('student') ) {
+// 		var_dump('hi');
+//         // set_query_var('posts_per_page', 4);
+//     }
+// }
 
+	add_action( 'after_setup_theme', 'resize_images_thumb' );
+	function resize_images_thumb() {
+		set_post_thumbnail_size( 150, 150 );
+	}
+	

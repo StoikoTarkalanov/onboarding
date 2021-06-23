@@ -19,6 +19,7 @@ get_header();
 	// echo $current_id;
 	$taxonomy_data = get_the_terms( $current_id, 'students-category' );
 
+	$status_data = get_post_meta( $current_id, 'student_status', true );
 	$lives_in_data = get_post_meta( $current_id, 'student_home', true );
 	$address_data = get_post_meta( $current_id, 'student_address', true );
 	$birth_data = get_post_meta( $current_id, 'student_birth', true );
@@ -52,7 +53,7 @@ get_header();
 				echo '</ul>';
 			}
 			
-			if ( ! empty( wp_trim_words( $lives_in_data ) ) || ! empty( wp_trim_words( $address_data ) ) || ! empty( wp_trim_words( $birth_data ) ) || ! empty( wp_trim_words( $grade_data ) ) ) {
+			if ( $status_data == '1' || ! empty( wp_trim_words( $lives_in_data ) ) || ! empty( wp_trim_words( $address_data ) ) || ! empty( wp_trim_words( $birth_data ) ) || ! empty( wp_trim_words( $grade_data ) ) ) {
 				echo '<ul>';
 					echo '<h6>User Info</h6>';
 					if ( ! empty( wp_trim_words( $lives_in_data ) ) ) {
@@ -66,6 +67,11 @@ get_header();
 					}	
 					if ( ! empty( wp_trim_words( $grade_data ) ) ) {
 						echo '<li>' . $grade_data . '</li>';
+					}	
+					if ( $status_data == '1' ) {
+						echo '<li>' . 'Active Now' . '</li>';
+					} else {
+						echo '<li>' . 'Inactive' . '</li>';
 					}	
 				echo '</ul>';
 			}

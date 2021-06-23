@@ -9,8 +9,8 @@
    License: GPL2
    */
 
-    add_filter('the_content', 'add_div_element');
-    function add_div_element ($content) {
+    add_filter( 'the_content', 'add_div_element' );
+    function add_div_element( $content ) {
 
         if ( is_singular( 'students' ) ) {
             
