@@ -9,6 +9,7 @@
    License: GPL2
    */
 
+    // Adding Div To The Content   
     add_filter( 'the_content', 'add_div_element' );
     function add_div_element( $content ) {
 

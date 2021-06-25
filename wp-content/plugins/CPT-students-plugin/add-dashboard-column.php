@@ -1,7 +1,7 @@
 <?php
 
-// Activate feature image
-function current_get_featured_image( $post_ID ) {
+    // Activate Feature Image
+    function current_get_featured_image( $post_ID ) {
     $post_thumbnail_id = get_post_thumbnail_id( $post_ID );
         if ( $post_thumbnail_id ) {
 
@@ -41,7 +41,7 @@ function current_get_featured_image( $post_ID ) {
             $checkbox_value = get_post_meta( $post_ID, 'student_status', true );
 
             ?>
-                <input type="checkbox" name="status" value="1" <?php checked( $checkbox_value, '1' ); ?> />
+                <input type="checkbox" name="status" value="1" <?php checked( $checkbox_value, '1' ); ?>  disabled/>
             <?php
         }
     }

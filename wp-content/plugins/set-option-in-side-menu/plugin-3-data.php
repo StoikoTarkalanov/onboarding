@@ -9,10 +9,11 @@
    License: GPL2
    */
 
-   function custom_nav( $items ) {
+    // Set Custom Option Button To Nav Menue 
+   add_filter( 'wp_nav_menu_items', 'custom_nav_optin_to_settings' );
+   function custom_nav_optin_to_settings( $items ) {
     $settings_data = admin_url( 'options-general.php' );
     
-
     if ( is_user_logged_in() ) {
         $items .= '<li id="menu-item-1770">'
                 . '<div class="ancestor-wrapper">'
@@ -24,4 +25,3 @@
     return $items;
    }
 
-   add_filter( 'wp_nav_menu_items', 'custom_nav' );

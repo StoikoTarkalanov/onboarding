@@ -10,13 +10,14 @@
    */
 
   
-  // check custom post type for students 
+    // Check Custom Post Type For Students 
     add_action( 'admin_menu', 'add_custom_submenu' );
     function add_custom_submenu () {
         $sub_menu = add_menu_page( 'Onboarding Page', 'AJAX CHECKBOX',  'manage_options', 'onboarding-elements', 'onboarding_elements' );
         add_action( 'admin_print_scripts-' . $sub_menu, 'trigger_jquery' );
     }
     
+    // Display Checkbox Field
     function onboarding_elements () {
         ?>
             <label for="data_check"> Filters </label> 
@@ -24,11 +25,13 @@
         <?php
     }
     
+    // Enque JS Script
     function trigger_jquery () {
         wp_enqueue_script( 'javascript_file_unique', plugins_url() . '/ajax-plugin/script.js', array( 'jquery' ), null, true );
         wp_localize_script( 'javascript_file_unique', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' )) );    
     }
     
+    // Handle AJAX 
     add_action( 'wp_ajax_handle_with_options_api', 'handle_with_options_api' );
     function handle_with_options_api () {
         

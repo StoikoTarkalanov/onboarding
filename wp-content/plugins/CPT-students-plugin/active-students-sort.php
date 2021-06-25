@@ -1,6 +1,6 @@
 <?php
 
-    // Get active/inactive students
+    // Get Active/Inactive Students
     add_action('pre_get_posts', 'filter_students_data_by_active');
     function filter_students_data_by_active( $query ) {
         $orderby = $query->get( 'orderby' );

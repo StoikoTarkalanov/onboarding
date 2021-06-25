@@ -1,6 +1,6 @@
 <?php
 
-    // REST API VIA POSTMAN
+    // REST API (Via Postman)
     
     // Get By ID
     function collect_students_data_by_id( $data ) {
@@ -61,7 +61,7 @@
         );
     } 
 
-    // Add One
+    // Add 
     function add_student_data() {
         if ( ! empty( $_POST['post_title'] ) && ! empty( $_POST['post_content'] ) ) {
             $new_student = array(

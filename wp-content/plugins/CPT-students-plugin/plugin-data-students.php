@@ -9,6 +9,9 @@
    License: GPL2
    */
   
+   // Plugin Main File
+   // Including All Files
+
   // Custom Post Type ( Registratin )
   include dirname( __FILE__ ) . '/register-cpt.php';
   

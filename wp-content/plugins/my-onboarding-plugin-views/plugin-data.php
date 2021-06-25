@@ -9,7 +9,8 @@
    License: GPL2
    */
 
-
+   // Get Meta Data And Sets View
+   add_action( 'wp_head', 'awepop_add_view' );
    function awepop_add_view() {
 
       if( is_single() ) {
@@ -26,8 +27,7 @@
       }
    }
 
-   add_action( 'wp_head', 'awepop_add_view' );
-
+   // Get Views Count
    function awepop_get_view_count() {
       global $post;
       $current_views = get_post_meta( $post->ID , 'pop_views', true );
@@ -40,6 +40,7 @@
       return $current_views;
    }
 
+   // Display Views
    function awepop_show_views() {
       $singular = 'view'; 
       $plural = 'views';

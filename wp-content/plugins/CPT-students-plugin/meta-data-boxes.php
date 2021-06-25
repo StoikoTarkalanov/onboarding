@@ -1,6 +1,6 @@
 <?php
 
-    // Metaboxes
+    // Add Metaboxes
     add_action( 'add_meta_boxes', 'student_status_add_meta' );
     function student_status_add_meta() {
         add_meta_box( 'student_status', 'Status', 'student_metabox_markup_status', 'students' );
@@ -26,6 +26,7 @@
         add_meta_box( 'student_grade', 'Grade', 'student_metabox_markup_grade', 'students' );
     }
 
+    // Gets Post Meta And Displays Markup In Edit
     function student_metabox_markup_status( $post ) {
         $student_status = get_post_meta( $post->ID, 'student_status', true );
 
@@ -71,6 +72,7 @@
         <?php
     }
 
+    // Saves Metadata (Based On User Choice)
     add_action( 'save_post', 'save_student_postdata' );
     function save_student_postdata( $post_id ) {
         if ( array_key_exists( 'lives', $_POST ) ) {

@@ -1,13 +1,13 @@
 <?php
 
-    // Widget
-    class students_widget extends WP_Widget {
-  
+    // Widget -> Displays Active/Inactive
+    class Students_Widget extends WP_Widget {
+        
         function __construct() {
             parent::__construct(
                 'students_widget', 
-                __('Students Widget', 'students_widget_domain'), 
-                array( 'description' => __( 'Monitoring students status', 'students_widget_domain' ), ) 
+                'Students Widget', 'students_widget_domain', 
+                array( 'description' => 'Monitoring students status', 'students_widget_domain' ) 
             );
         }
         
@@ -16,17 +16,18 @@
             $status = $instance[ 'status' ];
             $data_per_post = $instance['data_per_post'];
 
-            echo $args['before_widget'];
-
+            // Check Title
             if ( ! empty( $title ) ) {
                 echo $args['before_title'] . $title . $args['after_title'];
             }
 
+            // Set Arguments
             $args = array(
                 'post_type'  => 'students',
     			'posts_per_page'    => $data_per_post,
             );
 
+            // Check To Set Properly Meta query
             if ( $status == 'active' ) {
                 $args['meta_query'] = array(
                     array(
@@ -43,35 +44,26 @@
                 );
             }
 
-            $the_query = new WP_Query( $args );
 
+            // Set Query And If Post -> Displays Current Data
+            $the_query = new WP_Query( $args );
             if ( $the_query->have_posts() ) {
                 if ( $status == 'active' ) {
-                    ?>
-                    <h6>Active Now:</h6>
-                    <?php
+                    ?> <h6>Active Now:</h6> <?php
                 } else {
-                    ?>
-                    <h6>Inactive:</h6>
-                    <?php
+                    ?> <h6>Inactive:</h6> <?php
                 }
                 while ( $the_query->have_posts() ) {
                     $the_query->the_post();
 
-                    ?>
-                        <h6> <a href=" <?php the_permalink(); ?> "> <?php the_title(); ?> </a> </h6>
-                    <?php
+                    ?> <h6> <a href=" <?php the_permalink(); ?> "> <?php the_title(); ?> </a> </h6> <?php
                 }
-                
             } else {
-                ?>
-                    <h6>There are no active students yet!</h6>
-                <?php
+                ?> <h6>There are no active students yet!</h6> <?php
             }
-
-            // echo $args['after_widget'];
         }
-                
+        
+        // 
         public function form( $instance ) {
             $title = ! empty( $instance['title'] ) ? $instance['title'] : 'Add Title';
             $status = ! empty( $instance['status'] ) ? $instance['status'] : 'active';
@@ -115,7 +107,7 @@
      
     add_action( 'widgets_init', 'loading_widget' );
     function loading_widget() {
-        register_widget( 'students_widget' );
+        register_widget( 'Students_Widget' );
     }
 
     // Custom Sidebar
@@ -123,9 +115,9 @@
     function custom_students_sidebar() {
         register_sidebar(
             array (
-                'name'          => __( 'Custom Students Sidebar', 'twentytwentychild' ),
+                'name'          => 'Custom Students Sidebar', 'twentytwentychild',
                 'id'            => 'students-sidebar',
-                'description'   => __( 'Custom Sidebar - Student Information', 'twentytwentychild' ),
+                'description'   => 'Custom Sidebar - Student Information', 'twentytwentychild',
                 'before_widget' => '<aside id="%1$s" class="widget %2$s">',
                 'after_widget'  => '</aside>',
                 'before_title'  => '<h3 class="widget-students">',
